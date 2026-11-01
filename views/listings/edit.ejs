@@ -1,0 +1,156 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="col-lg-8 col-md-10">
+  
+    <div class="new-card p-4">
+
+      <h2 class="fw-bold mb-1">Edit Listing</h2>
+      <p class="text-muted mb-4">
+        Update your property details.
+      </p>
+
+      <form
+        method="POST"
+        action="/listings/<%= listing._id %>?_method=PUT"
+        class="needs-validation"
+        enctype="multipart/form-data"
+        novalidate
+      >
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Title</label>
+          <input
+            type="text"
+            name="listing[title]"
+            value="<%= listing.title %>"
+            class="form-control custom-input"
+            required
+          >
+          <div class="invalid-feedback">
+            Please enter a title.
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea
+            name="listing[description]"
+            rows="5"
+            class="form-control custom-input"
+            required
+          ><%= listing.description %></textarea>
+          <div class="invalid-feedback">
+            Please enter a description.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="listingCategory">Category</label>
+          <select id="listingCategory" name="listing[category]" class="form-select custom-input" required>
+            <% for (const category of categories) { %>
+              <option value="<%= category %>" <%= (listing.category || "Other") === category ? "selected" : "" %>><%= category %></option>
+            <% } %>
+          </select>
+        </div>
+
+<!--privew of current image -->
+<div class="mb-3">
+    <label class="form-label">Current Listing Image</label>
+    <div>
+        <img
+            src="<%= listing.image.url %>"
+            alt="Current listing image"
+            class="img-thumbnail"
+            style="width: 250px; height: 180px; object-fit: cover;"
+        >
+    </div>
+    <small class="text-muted">
+        Upload a new image below if you want to replace this one.
+    </small>
+</div>
+
+        <!-- Image -->
+    <div class="mb-3">
+  <label class="form-label fw-semibold">Upload New Image</label>
+
+  <input
+    type="file"
+    name="listing[image]"
+    class="form-control custom-input"
+  >
+
+  <div class="invalid-feedback">
+    Please enter a valid image URL.
+  </div>
+</div>
+
+        <div class="row">
+
+          <!-- Price -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Price (₹)</label>
+            <input
+              type="number"
+              name="listing[price]"
+              value="<%= listing.price %>"
+              class="form-control custom-input"
+              min="1"
+              required
+            >
+            <div class="invalid-feedback">
+              Please enter a valid price.
+            </div>
+          </div>
+
+          <!-- Country -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              value="<%= listing.country %>"
+              class="form-control custom-input"
+              required
+            >
+            <div class="invalid-feedback">
+              Please enter a country.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Location -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            value="<%= listing.location %>"
+            class="form-control custom-input"
+            required
+          >
+          <div class="invalid-feedback">
+            Please enter a location.
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+          <a href="/listings/<%= listing._id %>"  class="btn btn-dark w-50">
+            Cancel
+          </a>
+
+          <button class="btn add-btn w-50">
+            Save Changes
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+ <script src="/JS/script.js"></script>

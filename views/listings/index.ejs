@@ -1,0 +1,145 @@
+
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mb-0">
+    <div class="col-12">
+
+        <!-- Search Section -->
+        <section class="wander-search-section">
+            <div class="wander-search-container">
+
+                <div class="search-heading">
+                    <h1>Find your next getaway.</h1>
+                    <p>Discover places worth staying for.</p>
+                </div>
+
+                <form action="/listings" method="GET" class="wander-search-bar">
+                    <% if (currentCategory) { %>
+                        <input type="hidden" name="category" value="<%= currentCategory %>">
+                    <% } %>
+                    <div class="search-field">
+                        <label for="location">Where</label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="Search destinations"
+                            value="<%= typeof location !== 'undefined' ? location : '' %>"
+                        >
+                    </div>
+
+                    <div class="search-divider"></div>
+
+                    <button type="submit" class="wander-search-button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search</span>
+                    </button>
+                </form>
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Price Display Controls -->
+<div class="price-display-controls">
+    <div class="price-toggle-info">
+        <strong>Display total price</strong>
+        <span>Includes all nights, before taxes</span>
+    </div>
+
+    <label class="price-toggle" for="totalPriceToggle">
+        <input type="checkbox" id="totalPriceToggle">
+        <span class="price-toggle-slider"></span>
+    </label>
+</div>
+
+<!-- Night Selector: visible only when total price is enabled -->
+<div class="night-selector" id="nightSelectorContainer" hidden>
+    <label for="numberOfNights">Number of nights</label>
+
+    <select id="numberOfNights">
+        <option value="1">1 night</option>
+        <option value="2">2 nights</option>
+        <option value="3">3 nights</option>
+        <option value="4">4 nights</option>
+        <option value="5">5 nights</option>
+        <option value="7">7 nights</option>
+        <option value="10">10 nights</option>
+        <option value="14">14 nights</option>
+    </select>
+</div>
+
+<!-- Listings -->
+<% if (showWishlist) { %>
+    <h2 class="saved-stays-heading">Your saved stays</h2>
+<% } %>
+<div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
+
+    <% for (let listing of allListings) { %>
+        <div class="col">
+
+            <div class="listing-card-wrap">
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <div class="card listing-card h-100">
+
+                    <img
+                        src="<%= listing.image.url %>"
+                        class="card-img-top"
+                        alt="<%= listing.title %>"
+                    >
+
+                    <div class="card-body">
+                        <h5 class="card-title"><%= listing.title %></h5>
+
+                        <p class="card-text">
+                            <%= listing.location %>, <%= listing.country %>
+                        </p>
+
+                        <p
+                            class="price listing-price"
+                            data-nightly-price="<%= Number(listing.price) || 0 %>"
+                        >
+                            <strong>
+                                ₹ <%= (Number(listing.price) || 0).toLocaleString("en-IN") %>
+                            </strong>
+                            <span class="price-period"> / night</span>
+                        </p>
+
+                    </div>
+                    </div>
+                </a>
+                <button
+                    type="button"
+                    class="listing-wishlist-button"
+                    data-listing-id="<%= listing._id %>"
+                    data-listing-title="<%= listing.title %>"
+                    aria-label="Add <%= listing.title %> to wishlist"
+                    aria-pressed="false"
+                    title="Add to wishlist"
+                >
+                    <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                </button>
+            </div>
+
+        </div>
+    <% } %>
+
+</div>
+
+<% if (allListings.length === 0) { %>
+    <div class="listing-empty-state">
+        <i class="fa-regular fa-heart"></i>
+        <h2><%= showWishlist ? "No saved stays yet" : "No stays found" %></h2>
+        <p><%= showWishlist ? "Tap the heart on a listing to save it here." : "Try another destination or category." %></p>
+    </div>
+<% } %>
+
+<script src="/JS/totalPrice.js"></script>
+<script>
+    window.wishlistConfig = {
+        loggedIn: <%- JSON.stringify(Boolean(currUser)) %>,
+        ids: <%- JSON.stringify(currUser && currUser.wishlist ? currUser.wishlist.map((id) => String(id)) : []) %>
+    };
+</script>
+<script src="/JS/wishlist.js"></script>

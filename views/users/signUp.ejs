@@ -1,0 +1,63 @@
+<% layout("/layouts/boilerplate") %>
+
+<section class="auth-page">
+  <div class="auth-card">
+    <aside class="auth-aside">
+      <a class="auth-brand" href="/listings"><i class="fa-regular fa-compass"></i> WanderLust</a>
+      <div class="auth-aside-copy">
+        <span class="auth-kicker">YOUR NEXT STAY STARTS HERE</span>
+        <h1>Make room for a little adventure.</h1>
+        <p>Save places you love, discover somewhere new, and share a stay of your own.</p>
+      </div>
+      <div class="auth-aside-footer"><i class="bi bi-heart-fill"></i> Find a place that feels like yours.</div>
+    </aside>
+
+    <div class="auth-form-panel">
+      <div class="auth-form-heading">
+        <span class="auth-mobile-mark"><i class="fa-regular fa-compass"></i></span>
+        <p class="auth-kicker">CREATE YOUR ACCOUNT</p>
+        <h2>Join WanderLust</h2>
+        <p>Sign up to save stays and start exploring.</p>
+      </div>
+
+      <form action="/signup" method="POST" class="needs-validation auth-form" novalidate>
+        <div class="auth-field">
+          <label for="username">Username</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-person" aria-hidden="true"></i>
+            <input type="text" name="username" id="username" placeholder="Choose a username" autocomplete="username" required>
+          </div>
+          <div class="invalid-feedback">Please enter a username.</div>
+        </div>
+
+        <div class="auth-field">
+          <label for="email">Email address</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-envelope" aria-hidden="true"></i>
+            <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="invalid-feedback">Enter a valid email address.</div>
+        </div>
+
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-lock" aria-hidden="true"></i>
+            <input type="password" name="password" id="password" placeholder="Create a password" autocomplete="new-password" required>
+            <button type="button" class="auth-password-toggle" data-password-toggle="password" aria-label="Show password" aria-pressed="false">
+              <i class="bi bi-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">Please create a password.</div>
+        </div>
+
+        <button type="submit" class="auth-submit-button">Create account <i class="bi bi-arrow-right"></i></button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+      <p class="auth-terms">By continuing, you agree to our community guidelines.</p>
+    </div>
+  </div>
+</section>
+
+<script src="/JS/auth.js"></script>

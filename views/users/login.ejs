@@ -1,0 +1,54 @@
+<% layout("/layouts/boilerplate") %>
+
+<section class="auth-page">
+  <div class="auth-card">
+    <aside class="auth-aside auth-aside-login">
+      <a class="auth-brand" href="/listings"><i class="fa-regular fa-compass"></i> WanderLust</a>
+      <div class="auth-aside-copy">
+        <span class="auth-kicker">GOOD TO HAVE YOU BACK</span>
+        <h1>Your next getaway is waiting.</h1>
+        <p>Pick up where you left off and return to the stays you love.</p>
+      </div>
+      <div class="auth-aside-footer"><i class="bi bi-suitcase2-fill"></i> Your journey continues here.</div>
+    </aside>
+
+    <div class="auth-form-panel">
+      <div class="auth-form-heading">
+        <span class="auth-mobile-mark"><i class="fa-regular fa-compass"></i></span>
+        <p class="auth-kicker">WELCOME BACK</p>
+        <h2>Log in</h2>
+        <p>Enter your details to access your account.</p>
+      </div>
+
+      <form action="/login" method="POST" class="needs-validation auth-form" novalidate>
+        <div class="auth-field">
+          <label for="username">Username</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-person" aria-hidden="true"></i>
+            <input type="text" id="username" name="username" placeholder="Your username" autocomplete="username" required>
+          </div>
+          <div class="invalid-feedback">Please enter your username.</div>
+        </div>
+
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-lock" aria-hidden="true"></i>
+            <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" required>
+            <button type="button" class="auth-password-toggle" data-password-toggle="password" aria-label="Show password" aria-pressed="false">
+              <i class="bi bi-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">Please enter your password.</div>
+        </div>
+
+        <button type="submit" class="auth-submit-button">Log in <i class="bi bi-arrow-right"></i></button>
+      </form>
+
+      <p class="auth-switch">New to WanderLust? <a href="/signup">Create an account</a></p>
+      <p class="auth-terms">Your account helps keep your saved stays in one place.</p>
+    </div>
+  </div>
+</section>
+
+<script src="/JS/auth.js"></script>

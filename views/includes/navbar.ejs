@@ -1,0 +1,226 @@
+<!-- 
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-solid fa-compass"></i>
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav"> -->
+
+      <!-- Left-side navigation -->
+        <!-- <ul class="navbar-nav">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/listings">Explore</a>
+        </li>
+
+       
+      </ul>-->
+
+      <!-- Right-side authentication links -->
+     <!-- <ul class="navbar-nav ms-auto">
+         <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Add New Listing</a>
+        </li>
+        <% if (!currUser) {%>
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Sign Up</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+<% } %>
+<% if(currUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        <% } %>
+      </ul>
+
+    </div>
+  </div>
+</nav> -->
+
+<!-- updated nave bar -->
+<nav class="wl-navbar sticky-top">
+    <div class="wl-navbar-main">
+
+        <!-- Brand -->
+        <a href="/listings" class="wl-brand">
+            <i class="fa-regular fa-compass"></i>
+            <span>WanderLust</span>
+        </a>
+
+        <!-- Desktop Search -->
+        <div class="wl-search-wrap">
+            <button class="wl-search-pill" id="wlSearchToggle" type="button">
+                <span class="wl-search-destination">Where to?</span>
+                <span class="wl-search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+            </button>
+
+            <!-- Interactive Search Panel -->
+            <div class="wl-search-panel" id="wlSearchPanel">
+                <form action="/listings" method="GET" class="wl-search-form">
+
+                    <div class="wl-search-field">
+                        <label for="wlDestination">Where</label>
+                        <input
+                            type="text"
+                            id="wlDestination"
+                            name="location"
+                            placeholder="Search destinations"
+                            autocomplete="off"
+                        >
+                        <div class="wl-suggestions" id="wlSuggestions">
+                            <button type="button" data-location="Goa">
+                                <i class="fa-solid fa-umbrella-beach"></i>
+                                <span>Goa</span>
+                            </button>
+                            <button type="button" data-location="Manali">
+                                <i class="fa-solid fa-mountain-sun"></i>
+                                <span>Manali</span>
+                            </button>
+                            <button type="button" data-location="Varanasi">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>Varanasi</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="wl-search-submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search</span>
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="wl-navbar-actions">
+
+            <a href="/listings/new" class="wl-host-link">
+                Host your home
+            </a>
+
+            <a
+                href="/listings?wishlist=1"
+                class="wl-icon-button"
+                aria-label="View saved stays"
+                title="Saved stays"
+            >
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
+            <!-- User Menu -->
+            <div class="wl-user-menu-wrap">
+                <button
+                    type="button"
+                    class="wl-user-menu wl-menu-button"
+                    id="wlUserMenuToggle"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a
+                    class="wl-user-menu wl-profile-button"
+                    href="<%= currUser ? '/profile' : '/login' %>"
+                    aria-label="<%= currUser ? 'Open profile' : 'Log in' %>"
+                    title="<%= currUser ? 'Profile' : 'Log in' %>"
+                >
+                    <span class="wl-avatar">
+                        <% if (currUser && currUser.profileImage && currUser.profileImage.url) { %>
+                            <img src="<%= currUser.profileImage.url %>" alt="">
+                        <% } else { %>
+                            <i class="fa-solid fa-user" aria-hidden="true"></i>
+                        <% } %>
+                    </span>
+                </a>
+
+                <div class="wl-user-dropdown" id="wlUserDropdown">
+
+                    <a href="/listings">Explore listings</a>
+                    <div class="wl-dropdown-static-item">Languages &amp; currency</div>
+                    <a href="https://www.airbnb.co.in/help" target="_blank" rel="noopener noreferrer">Help Centre</a>
+                    <hr>
+                    <a href="/listings/new" class="wl-host-dropdown-item">
+                        <strong>Become a host</strong>
+                        <span>It’s easy to start hosting and earn extra income.</span>
+                    </a>
+                    <a href="https://www.airbnb.co.in/refer?r=67" target="_blank" rel="noopener noreferrer">Refer a host</a>
+                    <a href="https://www.airbnb.co.in/co-hosts/home" target="_blank" rel="noopener noreferrer">Find a co-host</a>
+                    <hr>
+
+                    <% if (!currUser) { %>
+                        <a href="/login">Log in or sign up</a>
+                    <% } else { %>
+                        <a href="/profile">Your profile</a>
+                        <a href="/logout">Log out</a>
+                    <% } %>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="wl-category-bar">
+        <div class="wl-category-list">
+
+            <a href="/listings" class="wl-category <%= (typeof currentCategory === 'undefined' || !currentCategory) && (typeof showWishlist === 'undefined' || !showWishlist) ? 'active' : '' %>">
+                <i class="fa-solid fa-house"></i>
+                <span>Stays</span>
+            </a>
+
+            <a href="/listings?category=Trending" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Trending' ? 'active' : '' %>">
+                <i class="fa-solid fa-fire"></i>
+                <span>Trending</span>
+            </a>
+
+            <a href="/listings?category=Beachfront" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Beachfront' ? 'active' : '' %>">
+                <i class="fa-solid fa-umbrella-beach"></i>
+                <span>Beachfront</span>
+            </a>
+
+            <a href="/listings?category=Mountains" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Mountains' ? 'active' : '' %>">
+                <i class="fa-solid fa-mountain-sun"></i>
+                <span>Mountains</span>
+            </a>
+
+            <a href="/listings?category=Countryside" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Countryside' ? 'active' : '' %>">
+                <i class="fa-solid fa-tree"></i>
+                <span>Countryside</span>
+            </a>
+
+            <a href="/listings?category=Amazing%20views" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Amazing views' ? 'active' : '' %>">
+                <i class="fa-solid fa-mountain-city"></i>
+                <span>Amazing views</span>
+            </a>
+
+            <a href="/listings?category=Budget%20stays" class="wl-category <%= typeof currentCategory !== 'undefined' && currentCategory === 'Budget stays' ? 'active' : '' %>">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Budget stays</span>
+            </a>
+
+        </div>
+    </div>
+</nav>
+

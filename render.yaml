@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: wanderlust-app
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /listings
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SECRET
+        generateValue: true
+      - key: MONGO_URL
+        sync: false
+      - key: MAP_BOX
+        sync: false
+      - key: CLOUD_NAME
+        sync: false
+      - key: CLOUD_API_KEY
+        sync: false
+      - key: CLOUD_API_SECRET_KEY
+        sync: false

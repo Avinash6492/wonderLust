@@ -1,0 +1,95 @@
+<% layout("/layouts/boilerplate") %>
+
+<main class="profile-page">
+  <section class="profile-hero">
+    <div class="profile-user-summary">
+      <div class="profile-avatar">
+        <% if (profileUser.profileImage && profileUser.profileImage.url) { %>
+          <img src="<%= profileUser.profileImage.url %>" alt="<%= profileUser.username %> profile photo">
+        <% } else { %>
+          <%= profileUser.username ? profileUser.username.charAt(0).toUpperCase() : "W" %>
+        <% } %>
+      </div>
+      <div>
+        <p class="profile-eyebrow">YOUR WANDERLUST ACCOUNT</p>
+        <h1>Welcome, <%= profileUser.username %></h1>
+        <p class="profile-email"><i class="bi bi-envelope"></i> <%= profileUser.email %></p>
+      </div>
+    </div>
+    <a href="/listings" class="profile-browse-link"><i class="bi bi-arrow-left"></i> Back to home</a>
+  </section>
+
+  <section class="profile-stats" aria-label="Account summary">
+    <a class="profile-stat-card" href="/listings?wishlist=1">
+      <span class="profile-stat-icon"><i class="bi bi-heart"></i></span>
+      <span><strong><%= savedStayCount %></strong><small>Saved stays</small></span>
+      <i class="bi bi-arrow-up-right profile-stat-arrow"></i>
+    </a>
+    <a class="profile-stat-card" href="#your-listings">
+      <span class="profile-stat-icon"><i class="bi bi-house-door"></i></span>
+      <span><strong><%= hostedListingCount %></strong><small>Your listings</small></span>
+      <i class="bi bi-arrow-up-right profile-stat-arrow"></i>
+    </a>
+    <a class="profile-stat-card profile-host-stat" href="/listings/new">
+      <span class="profile-stat-icon"><i class="bi bi-plus-lg"></i></span>
+      <span><strong>Host a stay</strong><small>Share your place</small></span>
+      <i class="bi bi-arrow-up-right profile-stat-arrow"></i>
+    </a>
+  </section>
+
+  <section class="profile-account-card">
+    <div class="profile-section-heading">
+      <div>
+        <p class="profile-eyebrow">ACCOUNT DETAILS</p>
+        <h2>Your information</h2>
+      </div>
+      <i class="bi bi-person-vcard profile-section-icon"></i>
+    </div>
+    <div class="profile-details-grid">
+      <div><small>Username</small><strong><%= profileUser.username %></strong></div>
+      <div><small>Email address</small><strong><%= profileUser.email %></strong></div>
+    </div>
+    <form action="/profile/photo" method="POST" enctype="multipart/form-data" class="profile-photo-form">
+      <div>
+        <label for="profileImage">Profile photo</label>
+        <small>Choose a JPG or PNG image, up to 5 MB.</small>
+      </div>
+      <input type="file" id="profileImage" name="profileImage" accept="image/png,image/jpeg" required>
+      <button type="submit" class="profile-add-listing"><i class="bi bi-camera"></i> Upload photo</button>
+    </form>
+  </section>
+
+  <section class="profile-listings-section" id="your-listings">
+    <div class="profile-section-heading">
+      <div>
+        <p class="profile-eyebrow">YOUR HOSTING</p>
+        <h2>Your listings</h2>
+      </div>
+      <a href="/listings/new" class="profile-add-listing"><i class="bi bi-plus-lg"></i> Add a listing</a>
+    </div>
+
+    <% if (hostedListings.length === 0) { %>
+      <div class="profile-empty-state">
+        <span><i class="bi bi-house-heart"></i></span>
+        <div>
+          <h3>Your hosting journey starts here</h3>
+          <p>Share your place with travelers by creating your first listing.</p>
+        </div>
+        <a href="/listings/new" class="profile-add-listing">Create listing</a>
+      </div>
+    <% } else { %>
+      <div class="profile-listing-grid">
+        <% for (const listing of hostedListings) { %>
+          <a href="/listings/<%= listing._id %>" class="profile-listing-card">
+            <img src="<%= listing.image.url %>" alt="<%= listing.title %>">
+            <div>
+              <h3><%= listing.title %></h3>
+              <p><i class="bi bi-geo-alt"></i> <%= listing.location %>, <%= listing.country %></p>
+              <strong>₹ <%= Number(listing.price || 0).toLocaleString("en-IN") %> <small>/ night</small></strong>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+  </section>
+</main>
