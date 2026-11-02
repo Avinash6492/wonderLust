@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
+const crypto = require("crypto");
 const app = express();
 
 const mongoose = require("mongoose");
@@ -82,21 +83,20 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(session(sessionOpts));
+
+app.use((req, res, next) => {
+    if (["/login", "/signup", "/verify-email"].includes(req.path)) {
+        if (!req.session.csrfToken) req.session.csrfToken = crypto.randomBytes(32).toString("hex");
+        res.locals.csrfToken = req.session.csrfToken;
+    }
+    next();
+});
+
 const unsafeMethods = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 app.use((req, res, next) => {
     const origin = req.get("origin");
     if (!unsafeMethods.has(req.method) || !origin) return next();
-
-    let requestOrigin;
-    try {
-        requestOrigin = new URL(origin).origin;
-    } catch {
-        try {
-            requestOrigin = new URL(req.get("referer")).origin;
-        } catch {
-            return res.status(403).send("Invalid request origin.");
-        }
-    }
 
     const publicUrl = process.env.APP_BASE_URL || process.env.RENDER_EXTERNAL_URL;
     let expectedOrigin;
@@ -105,13 +105,31 @@ app.use((req, res, next) => {
     } catch {
         expectedOrigin = new URL(`${req.protocol}://${req.get("host")}`).origin;
     }
+
+    let requestOrigin;
+    try {
+        requestOrigin = new URL(origin).origin;
+    } catch {
+        const expectedToken = req.session?.csrfToken;
+        const submittedToken = req.body?._csrf;
+        const tokenIsValid = typeof expectedToken === "string" &&
+            typeof submittedToken === "string" &&
+            expectedToken.length === submittedToken.length &&
+            crypto.timingSafeEqual(Buffer.from(expectedToken), Buffer.from(submittedToken));
+        if (tokenIsValid) return next();
+
+        try {
+            requestOrigin = new URL(req.get("referer")).origin;
+        } catch {
+            return res.status(403).send("Invalid request origin.");
+        }
+    }
+
     if (requestOrigin !== expectedOrigin) {
         return res.status(403).send("Cross-origin request blocked.");
     }
     next();
 });
-
-app.use(session(sessionOpts));
 app.use(flash());
 
 app.use(passport.initialize());

@@ -29,6 +29,7 @@
       </div>
 
       <form action="/verify-email/resend" method="POST" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="auth-field">
           <label for="verificationEmail">Email address</label>
           <div class="auth-input-wrap">
