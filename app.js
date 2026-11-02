@@ -88,8 +88,10 @@ app.use((req, res, next) => {
     if (!unsafeMethods.has(req.method) || !origin) return next();
 
     try {
-        const expectedOrigin = new URL(`${req.protocol}://${req.get("host")}`).origin;
-        if (new URL(origin).origin !== expectedOrigin) {
+        const publicUrl = process.env.APP_BASE_URL || process.env.RENDER_EXTERNAL_URL;
+        const expectedOrigin = new URL(publicUrl || `${req.protocol}://${req.get("host")}`).origin;
+        const requestOrigin = new URL(origin).origin;
+        if (requestOrigin !== expectedOrigin) {
             return res.status(403).send("Cross-origin request blocked.");
         }
     } catch {
