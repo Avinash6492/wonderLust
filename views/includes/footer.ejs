@@ -7,8 +7,8 @@
       </a>
 
       <div class="footer-preferences" aria-label="Language and currency">
-        <span><i class="fa-solid fa-globe" aria-hidden="true"></i> English (IN)</span>
-        <span><i class="fa-solid fa-indian-rupee-sign" aria-hidden="true"></i> INR</span>
+        <button type="button" data-open-preferences><i class="fa-solid fa-globe" aria-hidden="true"></i> <span id="footerLanguage">English (India)</span></button>
+        <button type="button" data-open-preferences><i class="fa-solid fa-indian-rupee-sign" aria-hidden="true"></i> <span id="footerCurrency">INR</span></button>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <p class="footer-copyright">© <%= new Date().getFullYear() %> WanderLust, Inc.</p>
 
       <nav class="footer-legal-links" aria-label="Legal information">
-        <a href="/privacy">Privacy</a>
-        <a href="/Terms">Terms</a>
-        <a href="/CompanyDetails">Company details</a>
+        <a href="/privacy" data-i18n="footer.privacy">Privacy</a>
+        <a href="/terms" data-i18n="footer.terms">Terms</a>
+        <a href="/company" data-i18n="footer.company">Company details</a>
       </nav>
 
       <div class="footer-socials" aria-label="Social media">

@@ -43,6 +43,31 @@
         <%- include("../includes/navbar.ejs") %>
     <% } %>
 
+    <dialog id="preferencesDialog" class="preferences-dialog" aria-labelledby="preferencesTitle">
+        <form id="preferencesForm" class="preferences-form">
+            <div class="preferences-dialog-heading">
+                <h2 id="preferencesTitle" data-i18n="prefs.title">Language and currency</h2>
+                <button type="button" class="preferences-close" aria-label="Close" onclick="document.getElementById('preferencesDialog').close()">&times;</button>
+            </div>
+            <label for="preferenceLanguage" data-i18n="prefs.language">Language</label>
+            <select id="preferenceLanguage" name="language">
+                <option value="en">English (India)</option>
+                <option value="hi">हिन्दी (भारत)</option>
+            </select>
+            <label for="preferenceCurrency" data-i18n="prefs.currency">Currency</label>
+            <select id="preferenceCurrency" name="currency">
+                <option value="INR">INR — Indian Rupee</option>
+                <option value="USD">USD — US Dollar</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="GBP">GBP — British Pound</option>
+                <option value="AED">AED — UAE Dirham</option>
+            </select>
+            <p id="preferencesError" class="preferences-error" role="status"></p>
+            <button type="submit" class="detail-primary-button" data-i18n="prefs.save">Save preferences</button>
+            <p class="preferences-rate-note">Converted amounts use approximate daily reference rates.</p>
+        </form>
+    </dialog>
+
     <main class="page-content">
         <div class="container">
             <%- include("../includes/flash.ejs") %>
@@ -60,5 +85,6 @@
 
     <script src="/JS/script.js"></script>
     <script src="/JS/navbar.js"></script>
+    <script src="/JS/preferences.js"></script>
 </body>
 </html>

@@ -1,0 +1,17 @@
+<% layout("/layouts/boilerplate") %>
+
+<article class="legal-page company-details-page">
+  <p class="legal-eyebrow" data-i18n="legal.companyEyebrow">ABOUT THE OPERATOR</p>
+  <h1 data-i18n="legal.companyTitle">Company details</h1>
+  <p>WanderLust is a stay discovery and listing project. The current version supports accounts, user-submitted listings, reviews, saved stays, and price estimates. It does not currently make reservations or process payments.</p>
+  <dl class="company-details-list">
+    <div><dt>Service name</dt><dd>WanderLust</dd></div>
+    <div><dt>Operator</dt><dd>Project operator; registered business details have not been provided.</dd></div>
+    <% if (supportEmail) { %>
+      <div><dt>Contact email</dt><dd><a href="mailto:<%= supportEmail %>"><%= supportEmail %></a></dd></div>
+    <% } else { %>
+      <div><dt>Contact email</dt><dd>Not configured</dd></div>
+    <% } %>
+  </dl>
+  <p class="legal-notice">Before public launch, the operator should add the correct legal name, business address if applicable, and a monitored contact email.</p>
+</article>

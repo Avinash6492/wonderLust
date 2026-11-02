@@ -9,8 +9,8 @@
             <div class="wander-search-container">
 
                 <div class="search-heading">
-                    <h1>Find your next getaway.</h1>
-                    <p>Discover places worth staying for.</p>
+                    <h1 data-i18n="home.heading">Find your next getaway.</h1>
+                    <p data-i18n="home.subtitle">Discover places worth staying for.</p>
                 </div>
 
                 <form action="/listings" method="GET" class="wander-search-bar">
@@ -18,12 +18,13 @@
                         <input type="hidden" name="category" value="<%= currentCategory %>">
                     <% } %>
                     <div class="search-field">
-                        <label for="location">Where</label>
+                        <label for="location" data-i18n="search.where">Where</label>
                         <input
                             type="text"
                             id="location"
                             name="location"
                             placeholder="Search destinations"
+                            data-i18n-placeholder="search.destinationPlaceholder"
                             value="<%= typeof location !== 'undefined' ? location : '' %>"
                         >
                     </div>
@@ -32,7 +33,7 @@
 
                     <button type="submit" class="wander-search-button">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>Search</span>
+                        <span data-i18n="search.search">Search</span>
                     </button>
                 </form>
 
@@ -44,8 +45,8 @@
 <!-- Price Display Controls -->
 <div class="price-display-controls">
     <div class="price-toggle-info">
-        <strong>Display total price</strong>
-        <span>Includes all nights, before taxes</span>
+        <strong data-i18n="price.toggleTitle">Display total price</strong>
+        <span data-i18n="price.toggleSubtitle">Includes all nights, before taxes</span>
     </div>
 
     <label class="price-toggle" for="totalPriceToggle">
@@ -56,7 +57,7 @@
 
 <!-- Night Selector: visible only when total price is enabled -->
 <div class="night-selector" id="nightSelectorContainer" hidden>
-    <label for="numberOfNights">Number of nights</label>
+    <label for="numberOfNights" data-i18n="price.numberOfNights">Number of nights</label>
 
     <select id="numberOfNights">
         <option value="1">1 night</option>
@@ -96,14 +97,11 @@
                             <%= listing.location %>, <%= listing.country %>
                         </p>
 
-                        <p
-                            class="price listing-price"
-                            data-nightly-price="<%= Number(listing.price) || 0 %>"
-                        >
-                            <strong>
+                        <p class="price listing-price" data-nightly-price="<%= Number(listing.price) || 0 %>">
+                            <strong class="price-value" data-price-inr="<%= Number(listing.price) || 0 %>">
                                 ₹ <%= (Number(listing.price) || 0).toLocaleString("en-IN") %>
                             </strong>
-                            <span class="price-period"> / night</span>
+                            <span class="price-period" data-i18n="price.perNight"> / night</span>
                         </p>
 
                     </div>

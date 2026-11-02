@@ -1,0 +1,34 @@
+<% layout("/layouts/boilerplate") %>
+
+<article class="legal-page">
+  <p class="legal-eyebrow" data-i18n="legal.privacyEyebrow">YOUR INFORMATION</p>
+  <h1 data-i18n="legal.privacyTitle">Privacy Policy</h1>
+  <p class="legal-updated">Last updated: 2 November 2026</p>
+  <p>WanderLust is a stay-listing project. This policy explains what information the app uses and which services process it. The current app provides listing discovery and estimates; it does not take reservations or payments.</p>
+
+  <h2>Information we use</h2>
+  <ul>
+    <li><strong>Account details:</strong> username, email address, and the password hash managed by the authentication library.</li>
+    <li><strong>Profile and listing content:</strong> profile photos, listing details and photos, reviews, and saved listings.</li>
+    <li><strong>Session data:</strong> a session identifier and temporary sign-in state stored in a cookie and MongoDB session store.</li>
+    <li><strong>Location searches:</strong> a destination typed into search. When a host creates or updates a listing, its location is sent to Mapbox for geocoding.</li>
+    <li><strong>Preference data:</strong> language and currency preferences, saved in your browser. Currency conversion requests use Frankfurter’s public reference-rate API.</li>
+  </ul>
+
+  <h2>Services that process data</h2>
+  <ul>
+    <li><strong>MongoDB Atlas</strong> stores accounts, listings, reviews, saved-stay references, and sessions.</li>
+    <li><strong>Cloudinary</strong> stores listing and profile images uploaded by users.</li>
+    <li><strong>Mapbox</strong> processes host-submitted place names to look up map coordinates.</li>
+    <li><strong>Resend</strong> will deliver account verification email after the operator configures its email credentials.</li>
+  </ul>
+  <p>These providers process data under their own terms and privacy policies. The site does not currently use analytics or advertising trackers.</p>
+
+  <h2>Cookies, security, and retention</h2>
+  <p>The app uses an HTTP-only session cookie to keep you signed in. In production it is marked secure and uses same-site restrictions. Sessions expire after seven days. Account and user-submitted content remain in the database until the operator removes them; contact the operator to request access or removal.</p>
+
+  <h2>Your choices</h2>
+  <p>You can choose not to create an account, clear language and currency preferences from your browser storage, and avoid uploading a photo or creating a listing. For privacy questions or a data-removal request, use the contact details on the <a href="/company">Company details</a> page.</p>
+
+  <p class="legal-notice">This policy describes the current project implementation. The operator should review it and provide a monitored contact address before inviting the public to use the service.</p>
+</article>

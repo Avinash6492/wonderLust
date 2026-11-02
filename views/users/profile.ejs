@@ -85,7 +85,7 @@
             <div>
               <h3><%= listing.title %></h3>
               <p><i class="bi bi-geo-alt"></i> <%= listing.location %>, <%= listing.country %></p>
-              <strong>₹ <%= Number(listing.price || 0).toLocaleString("en-IN") %> <small>/ night</small></strong>
+              <strong class="price-value" data-price-inr="<%= Number(listing.price || 0) %>">₹ <%= Number(listing.price || 0).toLocaleString("en-IN") %></strong> <small data-i18n="price.perNight">/ night</small>
             </div>
           </a>
         <% } %>

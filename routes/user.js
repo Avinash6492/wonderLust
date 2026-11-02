@@ -1,22 +1,43 @@
 
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user.js");
-const wrapAsync = require("../utils/wrapAsync");
+const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
 const {saveRedirectUrl, isLoggedIn} = require("../middelware.js");
 const userController = require("../controllers/user.js");
 const multer = require("multer");
-const { profileStorage } = require("../cloudConfig.js");
+const { rateLimit } = require("express-rate-limit");
+const createCloudinaryStorage = require("../utils/cloudinaryStorage.js");
+const profileStorage = createCloudinaryStorage("wanderlust_DEV/profiles");
 const profileUpload = multer({ storage: profileStorage, limits: { fileSize: 5 * 1024 * 1024 } });
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: "Too many sign-in attempts. Please wait 15 minutes and try again."
+});
+const verificationLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    limit: 5,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: "Too many verification requests. Please wait and try again."
+});
 
 // Show signup page
 router.get("/signup",userController.showSignUp );
 
-router.post("/signup", wrapAsync(userController.signUp));
+router.post("/signup", authLimiter, wrapAsync(userController.signUp));
 
 // show login page
 router.get("/login", userController.showLogin);
+
+router.get("/verify-email", userController.showEmailVerification);
+router.get("/verify-email/confirm", verificationLimiter, wrapAsync(userController.verifyEmail));
+router.get("/verify-email/resend", userController.showEmailVerification);
+router.post("/verify-email/resend", verificationLimiter, wrapAsync(userController.resendVerificationEmail));
+router.get("/verify-email/pending", userController.showEmailVerification);
 
 router.get("/profile", isLoggedIn, wrapAsync(userController.showProfile));
 
@@ -24,14 +45,28 @@ router.post("/profile/photo", isLoggedIn, profileUpload.single("profileImage"), 
 
 // Login
 router.post(
-    "/login",saveRedirectUrl,
-    passport.authenticate("local", {
-        failureRedirect: "/login",
-        failureFlash: true
-    }),
-  userController.Login
+    "/login",
+    authLimiter,
+    saveRedirectUrl,
+    (req, res, next) => {
+        passport.authenticate("local", (err, user) => {
+            if (err) return next(err);
+            if (!user) {
+                req.flash("error", "The username or password is incorrect.");
+                return res.redirect("/login");
+            }
+            if (user.emailVerified === false) {
+                req.flash("error", "Verify your email before signing in. You can request a new link below.");
+                return res.redirect("/verify-email");
+            }
+            req.logIn(user, (loginError) => {
+                if (loginError) return next(loginError);
+                return userController.Login(req, res);
+            });
+        })(req, res, next);
+    }
 );
 
-router.get("/logout",userController.logout);
+router.post("/logout",userController.logout);
 
 module.exports = router;

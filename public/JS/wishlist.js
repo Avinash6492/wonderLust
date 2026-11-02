@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             syncGuestWishlist(guestIds)
                 .then(({ ids }) => {
                     savedIds = new Set((ids || []).map(String));
-                    writeLocalIds(guestIds.slice(100));
+                    writeLocalIds([]);
                     renderButtons();
                 })
                 .catch(() => {});

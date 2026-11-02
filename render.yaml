@@ -21,3 +21,9 @@ services:
         sync: false
       - key: CLOUD_API_SECRET_KEY
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        sync: false
+      - key: SUPPORT_EMAIL
+        sync: false

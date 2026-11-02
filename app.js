@@ -7,6 +7,7 @@ const app = express();
 
 const mongoose = require("mongoose");
 const path = require("path");
+const helmet = require("helmet");
 const MONGO_URL = process.env.MONGO_URL?.trim();
 
 const methodOverride = require("method-override");
@@ -23,6 +24,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const userRouter = require("./routes/user.js");
 const wishlistRouter = require("./routes/wishlist.js");
+const pagesRouter = require("./routes/pages.js");
 
 if (!process.env.SECRET) {
     throw new Error("Missing required SECRET environment variable");
@@ -56,11 +58,45 @@ if (process.env.NODE_ENV === "production") {
     app.set("trust proxy", 1);
 }
 
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            baseUri: ["'self'"],
+            objectSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+            imgSrc: ["'self'", "data:", "blob:", "https:"],
+            fontSrc: ["'self'", "data:", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://api.mapbox.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com", "https://api.mapbox.com"],
+            connectSrc: ["'self'", "https://api.mapbox.com", "https://events.mapbox.com", "https://*.tiles.mapbox.com", "https://api.frankfurter.dev"],
+            workerSrc: ["'self'", "blob:"],
+            childSrc: ["'self'", "blob:"]
+        }
+    }
+}));
+
 app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 app.use(express.json({ limit: "20kb" }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
+
+const unsafeMethods = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+app.use((req, res, next) => {
+    const origin = req.get("origin");
+    if (!unsafeMethods.has(req.method) || !origin) return next();
+
+    try {
+        const expectedOrigin = new URL(`${req.protocol}://${req.get("host")}`).origin;
+        if (new URL(origin).origin !== expectedOrigin) {
+            return res.status(403).send("Cross-origin request blocked.");
+        }
+    } catch {
+        return res.status(403).send("Invalid request origin.");
+    }
+    next();
+});
 
 app.use(session(sessionOpts));
 app.use(flash());
@@ -94,6 +130,7 @@ app.use("/listings", listings);
 // Review routes
 app.use("/listings/:id/reviews", reviews);
 app.use("/wishlist", wishlistRouter);
+app.use("/", pagesRouter);
 app.use("/", userRouter);
 
 // Root route

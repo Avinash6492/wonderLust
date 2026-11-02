@@ -1,0 +1,44 @@
+<% layout("/layouts/boilerplate") %>
+
+<section class="auth-page">
+  <div class="auth-card verification-card">
+    <aside class="auth-aside">
+      <a class="auth-brand" href="/listings"><i class="fa-regular fa-compass"></i> WanderLust</a>
+      <div class="auth-aside-copy">
+        <span class="auth-kicker">ONE QUICK STEP</span>
+        <h1>Confirm your email.</h1>
+        <p>Verifying your address helps protect your account and keeps it in your hands.</p>
+      </div>
+      <div class="auth-aside-footer"><i class="bi bi-shield-check"></i> Your inbox is the key to your account.</div>
+    </aside>
+
+    <div class="auth-form-panel">
+      <div class="auth-form-heading">
+        <span class="auth-mobile-mark"><i class="bi bi-envelope-check"></i></span>
+        <p class="auth-kicker">EMAIL VERIFICATION</p>
+        <% if (emailSent === false) { %>
+          <h2>We couldn’t send the link</h2>
+          <p>Your account is created but not active yet. Try again after email delivery is configured.</p>
+        <% } else if (email) { %>
+          <h2>Check your inbox</h2>
+          <p>We sent a one-time verification link to <strong><%= email %></strong>. It expires in 30 minutes.</p>
+        <% } else { %>
+          <h2>Verify your email</h2>
+          <p>Enter the email used to sign up and we’ll send a new link if the account needs verification.</p>
+        <% } %>
+      </div>
+
+      <form action="/verify-email/resend" method="POST" class="auth-form">
+        <div class="auth-field">
+          <label for="verificationEmail">Email address</label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-envelope" aria-hidden="true"></i>
+            <input type="email" name="email" id="verificationEmail" value="<%= email || '' %>" autocomplete="email" required>
+          </div>
+        </div>
+        <button type="submit" class="auth-submit-button">Send a new link <i class="bi bi-arrow-right"></i></button>
+      </form>
+      <p class="auth-switch"><a href="/login">Back to log in</a></p>
+    </div>
+  </div>
+</section>

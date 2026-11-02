@@ -6,7 +6,8 @@ const Listing = require("../models/listing.js");
 const {isLoggedIn, isOwner,validateListing} = require("../middelware.js");
 const listingController = require("../controllers/listings.js")
 const multer = require("multer");
-const {storage} = require("../cloudConfig.js");
+const createCloudinaryStorage = require("../utils/cloudinaryStorage.js");
+const storage = createCloudinaryStorage("wanderlust_DEV");
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // Index Route: GET /listings

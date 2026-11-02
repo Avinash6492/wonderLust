@@ -115,7 +115,7 @@
         <!-- Right Actions -->
         <div class="wl-navbar-actions">
 
-            <a href="/listings/new" class="wl-host-link">
+            <a href="/listings/new" class="wl-host-link" data-i18n="nav.host">
                 Host your home
             </a>
 
@@ -124,6 +124,7 @@
                 class="wl-icon-button"
                 aria-label="View saved stays"
                 title="Saved stays"
+                data-i18n-title="nav.saved"
             >
                 <i class="fa-regular fa-heart"></i>
             </a>
@@ -156,23 +157,25 @@
 
                 <div class="wl-user-dropdown" id="wlUserDropdown">
 
-                    <a href="/listings">Explore listings</a>
-                    <div class="wl-dropdown-static-item">Languages &amp; currency</div>
-                    <a href="https://www.airbnb.co.in/help" target="_blank" rel="noopener noreferrer">Help Centre</a>
+                    <a href="/listings" data-i18n="nav.explore">Explore listings</a>
+                    <button type="button" class="wl-dropdown-static-item preferences-menu-button" data-open-preferences data-i18n="nav.preferences">Languages &amp; currency</button>
+                    <a href="https://www.airbnb.co.in/help" target="_blank" rel="noopener noreferrer" data-i18n="nav.help">Help Centre</a>
                     <hr>
                     <a href="/listings/new" class="wl-host-dropdown-item">
-                        <strong>Become a host</strong>
-                        <span>It’s easy to start hosting and earn extra income.</span>
+                        <strong data-i18n="nav.becomeHost">Become a host</strong>
+                        <span data-i18n="nav.hostText">It’s easy to start hosting and earn extra income.</span>
                     </a>
-                    <a href="https://www.airbnb.co.in/refer?r=67" target="_blank" rel="noopener noreferrer">Refer a host</a>
-                    <a href="https://www.airbnb.co.in/co-hosts/home" target="_blank" rel="noopener noreferrer">Find a co-host</a>
+                    <a href="https://www.airbnb.co.in/refer?r=67" target="_blank" rel="noopener noreferrer" data-i18n="nav.referHost">Refer a host</a>
+                    <a href="https://www.airbnb.co.in/co-hosts/home" target="_blank" rel="noopener noreferrer" data-i18n="nav.findCohost">Find a co-host</a>
                     <hr>
 
                     <% if (!currUser) { %>
-                        <a href="/login">Log in or sign up</a>
+                        <a href="/login" data-i18n="nav.login">Log in or sign up</a>
                     <% } else { %>
-                        <a href="/profile">Your profile</a>
-                        <a href="/logout">Log out</a>
+                        <a href="/profile" data-i18n="nav.profile">Your profile</a>
+                        <form action="/logout" method="POST" class="wl-logout-form">
+                            <button type="submit" data-i18n="nav.logout">Log out</button>
+                        </form>
                     <% } %>
 
                 </div>
