@@ -86,7 +86,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session(sessionOpts));
 
 app.use((req, res, next) => {
-    if (["/login", "/signup", "/verify-email"].includes(req.path)) {
+    if (["/login", "/signup"].includes(req.path) || req.path.startsWith("/verify-email")) {
         if (!req.session.csrfToken) req.session.csrfToken = crypto.randomBytes(32).toString("hex");
         res.locals.csrfToken = req.session.csrfToken;
     }
