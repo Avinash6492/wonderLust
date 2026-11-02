@@ -87,15 +87,26 @@ app.use((req, res, next) => {
     const origin = req.get("origin");
     if (!unsafeMethods.has(req.method) || !origin) return next();
 
+    let requestOrigin;
     try {
-        const publicUrl = process.env.APP_BASE_URL || process.env.RENDER_EXTERNAL_URL;
-        const expectedOrigin = new URL(publicUrl || `${req.protocol}://${req.get("host")}`).origin;
-        const requestOrigin = new URL(origin).origin;
-        if (requestOrigin !== expectedOrigin) {
-            return res.status(403).send("Cross-origin request blocked.");
-        }
+        requestOrigin = new URL(origin).origin;
     } catch {
-        return res.status(403).send("Invalid request origin.");
+        try {
+            requestOrigin = new URL(req.get("referer")).origin;
+        } catch {
+            return res.status(403).send("Invalid request origin.");
+        }
+    }
+
+    const publicUrl = process.env.APP_BASE_URL || process.env.RENDER_EXTERNAL_URL;
+    let expectedOrigin;
+    try {
+        expectedOrigin = new URL(publicUrl || `${req.protocol}://${req.get("host")}`).origin;
+    } catch {
+        expectedOrigin = new URL(`${req.protocol}://${req.get("host")}`).origin;
+    }
+    if (requestOrigin !== expectedOrigin) {
+        return res.status(403).send("Cross-origin request blocked.");
     }
     next();
 });
