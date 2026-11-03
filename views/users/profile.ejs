@@ -50,12 +50,14 @@
       <div><small>Email address</small><strong><%= profileUser.email %></strong></div>
     </div>
     <form action="/profile/photo" method="POST" enctype="multipart/form-data" class="profile-photo-form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div>
         <label for="profileImage">Profile photo</label>
         <small>Choose a JPG or PNG image, up to 5 MB.</small>
       </div>
       <input type="file" id="profileImage" name="profileImage" accept="image/png,image/jpeg" required>
       <button type="submit" class="profile-add-listing"><i class="bi bi-camera"></i> Upload photo</button>
+      <p id="profilePhotoUploadStatus" role="status" aria-live="polite"></p>
     </form>
   </section>
 
@@ -93,3 +95,5 @@
     <% } %>
   </section>
 </main>
+
+<script src="/JS/profilePhotoUpload.js"></script>

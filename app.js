@@ -103,7 +103,7 @@ app.use((req, res, next) => {
         requestOrigin = new URL(origin).origin;
     } catch {
         const expectedToken = req.session?.csrfToken;
-        const submittedToken = req.body?._csrf;
+        const submittedToken = req.body?._csrf || req.get("x-csrf-token");
         const tokenIsValid = typeof expectedToken === "string" &&
             typeof submittedToken === "string" &&
             expectedToken.length === submittedToken.length &&
