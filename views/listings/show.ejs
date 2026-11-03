@@ -157,16 +157,36 @@
         <% } %>
         <p class="detail-price"><strong class="price-value" data-price-inr="<%= Number(listing.price || 0) %>">₹ <%= Number(listing.price || 0).toLocaleString("en-IN") %></strong> <span data-i18n="price.perNight">/ night</span></p>
         <div class="detail-price-note"><i class="bi bi-moon-stars"></i><span>Nightly rate shown to help you plan your stay.</span></div>
-        <div class="stay-total-estimate" data-nightly-price="<%= Number(listing.price || 0) %>">
+        <% const isListingOwner = Boolean(currUser && listing.owner && currUser._id.equals(listing.owner._id)); %>
+        <% if (currUser && !isListingOwner) { %>
+          <form class="stay-total-estimate" data-nightly-price="<%= Number(listing.price || 0) %>" action="/listings/<%= listing._id %>/reservations" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <% } else { %>
+          <div class="stay-total-estimate" data-nightly-price="<%= Number(listing.price || 0) %>">
+        <% } %>
           <h3 data-i18n="price.estimateTitle">Estimate your stay</h3>
           <div class="stay-date-fields">
             <label for="checkInDate"><span data-i18n="price.checkIn">Check-in</span><input type="date" id="checkInDate" name="checkIn" required></label>
             <label for="checkOutDate"><span data-i18n="price.checkOut">Check-out</span><input type="date" id="checkOutDate" name="checkOut" required></label>
           </div>
+          <label class="reservation-guests-label" for="reservationGuests">Guests</label>
+          <input class="reservation-guests-input" type="number" id="reservationGuests" name="guests" min="1" max="16" value="1" required>
           <p class="stay-estimate-nights" id="stayEstimateNights" aria-live="polite" data-i18n="price.chooseDates">Choose dates to see your total.</p>
           <div class="stay-estimate-total"><span data-i18n="price.estimatedTotal">Estimated total</span><strong class="price-value" id="stayEstimateTotal" data-price-inr="0">₹ 0</strong></div>
           <p class="stay-estimate-disclaimer" data-i18n="price.estimateDisclaimer">Nightly rate × nights. Taxes and fees are not included; this is not a reservation.</p>
-        </div>
+          <% if (currUser && !isListingOwner) { %>
+            <button type="submit" class="reservation-submit-button">Continue to payment page <i class="bi bi-arrow-right"></i></button>
+            <p class="reservation-inline-note">This creates a pending request. Your stay isn’t confirmed until payment and availability are set up.</p>
+          <% } else if (isListingOwner) { %>
+            <p class="reservation-inline-note">You can’t reserve your own listing.</p>
+          <% } else { %>
+            <a href="/login" class="reservation-submit-button">Log in to reserve <i class="bi bi-arrow-right"></i></a>
+          <% } %>
+        <% if (currUser && !isListingOwner) { %>
+          </form>
+        <% } else { %>
+          </div>
+        <% } %>
         <a href="#guest-reviews" class="detail-primary-button" data-i18n="reviews.see">See guest reviews</a>
         <p class="detail-price-footnote" data-i18n="reviews.invitation">Have a stay to share? Add your review below.</p>
       </section>

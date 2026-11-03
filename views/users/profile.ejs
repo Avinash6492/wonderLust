@@ -99,7 +99,7 @@
     <div>
       <p class="profile-eyebrow">ACCOUNT CONTROL</p>
       <h2>Close your account</h2>
-      <p>Closing disables sign-in. Your account record, saved stays, profile photo, listings, and reviews remain stored in the database. Existing listings remain visible to visitors. This action does not permanently erase your data.</p>
+      <p>Closing disables sign-in. Your account record, saved stays, profile photo, listings, reviews, and reservation requests remain stored in the database. Existing listings remain visible to visitors. This action does not permanently erase your data.</p>
     </div>
     <form action="/account/close" method="POST" class="close-account-form" onsubmit="return confirm('Close this account? Your data will be retained, but you will be signed out and unable to log in.');">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">

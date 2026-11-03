@@ -26,6 +26,7 @@ const User = require("./models/user.js");
 const userRouter = require("./routes/user.js");
 const wishlistRouter = require("./routes/wishlist.js");
 const pagesRouter = require("./routes/pages.js");
+const reservationsRouter = require("./routes/reservations.js");
 
 if (!process.env.SECRET) {
     throw new Error("Missing required SECRET environment variable");
@@ -173,6 +174,7 @@ app.use("/listings", listings);
 // Review routes
 app.use("/listings/:id/reviews", reviews);
 app.use("/wishlist", wishlistRouter);
+app.use("/", reservationsRouter);
 app.use("/", pagesRouter);
 app.use("/", userRouter);
 

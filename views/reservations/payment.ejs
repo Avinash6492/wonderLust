@@ -1,0 +1,59 @@
+<% layout("/layouts/boilerplate") %>
+<%
+  const dateOptions = { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" };
+  const checkInLabel = new Date(reservation.checkIn).toLocaleDateString("en-IN", dateOptions);
+  const checkOutLabel = new Date(reservation.checkOut).toLocaleDateString("en-IN", dateOptions);
+  const formatInr = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+  const reservationReference = reservation._id.toString().slice(-8).toUpperCase();
+%>
+
+<main class="reservation-page">
+  <a href="/listings/<%= reservation.listing %>" class="reservation-back-link"><i class="bi bi-arrow-left"></i> Back to stay</a>
+  <div class="reservation-layout">
+    <section class="reservation-main-card">
+      <p class="profile-eyebrow">RESERVATION REQUEST</p>
+      <h1>Review your stay</h1>
+      <p class="reservation-lead">Your request is saved. Payment has not been set up yet, so the stay is not confirmed.</p>
+
+      <% if (emailSent) { %>
+        <div class="reservation-notice reservation-notice-success" role="status"><i class="bi bi-envelope-check"></i> Your request summary was submitted to our email service for delivery.</div>
+      <% } else { %>
+        <div class="reservation-notice" role="status"><i class="bi bi-info-circle"></i> Your request summary is below. Email delivery may be unavailable.</div>
+      <% } %>
+
+      <div class="reservation-summary-heading">
+        <div>
+          <span class="reservation-status-pill">Awaiting payment setup</span>
+          <h2><%= reservation.listingTitle %></h2>
+          <p><i class="bi bi-geo-alt"></i> <%= reservation.listingLocation %></p>
+        </div>
+      </div>
+
+      <dl class="reservation-details">
+        <div><dt>Check-in</dt><dd><%= checkInLabel %></dd></div>
+        <div><dt>Check-out</dt><dd><%= checkOutLabel %></dd></div>
+        <div><dt>Guests</dt><dd><%= reservation.guestCount %></dd></div>
+        <div><dt>Nights</dt><dd><%= reservation.nights %></dd></div>
+        <div><dt>Request reference</dt><dd>WL-<%= reservationReference %></dd></div>
+      </dl>
+
+      <section class="payment-placeholder" aria-labelledby="paymentPlaceholderTitle">
+        <div class="payment-placeholder-icon"><i class="bi bi-lock"></i></div>
+        <div>
+          <h2 id="paymentPlaceholderTitle">Payments are coming soon</h2>
+          <p>No card or bank details are collected on this page, and no payment has been taken.</p>
+        </div>
+        <button type="button" disabled aria-disabled="true">Payment not available</button>
+      </section>
+      <p class="reservation-fine-print">This is a request and price estimate, not a booking confirmation or invoice. Availability, taxes, and additional fees have not been checked.</p>
+    </section>
+
+    <aside class="reservation-price-card">
+      <p class="profile-eyebrow">PRICE ESTIMATE</p>
+      <div class="reservation-price-line"><span><%= formatInr(reservation.nightlyPrice) %> × <%= reservation.nights %> nights</span><strong><%= formatInr(reservation.subtotal) %></strong></div>
+      <div class="reservation-price-total"><span>Estimated subtotal</span><strong><%= formatInr(reservation.subtotal) %></strong></div>
+      <p>Taxes and fees are not included.</p>
+      <a href="/listings/<%= reservation.listing %>" class="detail-secondary-button">Return to listing</a>
+    </aside>
+  </div>
+</main>

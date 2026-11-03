@@ -27,3 +27,11 @@ services:
         sync: false
       - key: SUPPORT_EMAIL
         sync: false
+      - key: PAYMENT_PROVIDER
+        value: none
+      - key: PAYMENT_PUBLIC_KEY
+        sync: false
+      - key: PAYMENT_SECRET_KEY
+        sync: false
+      - key: PAYMENT_WEBHOOK_SECRET
+        sync: false

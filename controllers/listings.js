@@ -172,6 +172,7 @@ module.exports.showListings = async (req, res) => {
         .populate("owner");
 
     if (!listing) throw new ExpressError(404, "Listing not found");
+    if (!req.user) req.session.redirectUrl = req.originalUrl;
     res.render("listings/show.ejs", {
         listing,
         mapToken: process.env.MAP_BOX,
