@@ -94,6 +94,22 @@
       </div>
     <% } %>
   </section>
+
+  <section class="profile-danger-zone" id="close-account">
+    <div>
+      <p class="profile-eyebrow">ACCOUNT CONTROL</p>
+      <h2>Close your account</h2>
+      <p>Closing disables sign-in. Your account record, saved stays, profile photo, listings, and reviews remain stored in the database. Existing listings remain visible to visitors. This action does not permanently erase your data.</p>
+    </div>
+    <form action="/account/close" method="POST" class="close-account-form" onsubmit="return confirm('Close this account? Your data will be retained, but you will be signed out and unable to log in.');">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label for="closeAccountPassword">Confirm your password</label>
+      <input type="password" id="closeAccountPassword" name="password" autocomplete="current-password" required>
+      <label for="closeAccountConfirmation">Type CLOSE to confirm</label>
+      <input type="text" id="closeAccountConfirmation" name="confirmation" autocomplete="off" required>
+      <button type="submit" class="close-account-button">Close account</button>
+    </form>
+  </section>
 </main>
 
 <script src="/JS/profilePhotoUpload.js"></script>

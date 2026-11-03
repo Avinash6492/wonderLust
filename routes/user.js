@@ -42,6 +42,7 @@ router.get("/verify-email/pending", userController.showEmailVerification);
 router.get("/profile", isLoggedIn, wrapAsync(userController.showProfile));
 
 router.post("/profile/photo", isLoggedIn, profileUpload.single("profileImage"), wrapAsync(userController.updateProfilePhoto));
+router.post("/account/close", isLoggedIn, authLimiter, wrapAsync(userController.closeAccount));
 
 // Login
 router.post(
@@ -53,6 +54,10 @@ router.post(
             if (err) return next(err);
             if (!user) {
                 req.flash("error", "The username or password is incorrect.");
+                return res.redirect("/login");
+            }
+            if (user.accountClosedAt) {
+                req.flash("error", "This account is closed. Your account data has been retained.");
                 return res.redirect("/login");
             }
             if (user.emailVerified === false) {

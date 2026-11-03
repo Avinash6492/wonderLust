@@ -69,7 +69,7 @@ module.exports.verifyEmail = async (req, res) => {
 module.exports.resendVerificationEmail = async (req, res) => {
     const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        const user = await User.findOne({ email, emailVerified: false });
+        const user = await User.findOne({ email, emailVerified: false, accountClosedAt: null });
         if (user) {
             try {
                 await issueEmailVerification(user);
@@ -145,6 +145,49 @@ module.exports.Login = (req, res) => {
     }
     delete req.session.redirectUrl;
     res.redirect(redirectUrl);
+};
+
+module.exports.closeAccount = async (req, res, next) => {
+    const password = typeof req.body.password === "string" ? req.body.password : "";
+    const confirmation = typeof req.body.confirmation === "string" ? req.body.confirmation : "";
+
+    if (!password || confirmation !== "CLOSE") {
+        req.flash("error", "Enter your password and type CLOSE to confirm account closure.");
+        return res.redirect("/profile#close-account");
+    }
+
+    const { user: authenticatedUser } = await req.user.authenticate(password);
+    if (!authenticatedUser) {
+        req.flash("error", "The password is incorrect. Your account is still active.");
+        return res.redirect("/profile#close-account");
+    }
+
+    const closedUser = await User.findOneAndUpdate(
+        { _id: req.user._id, accountClosedAt: null },
+        {
+            $set: { accountClosedAt: new Date() },
+            $unset: { emailVerificationTokenHash: 1, emailVerificationExpiresAt: 1 }
+        },
+        { new: true }
+    );
+
+    if (!closedUser) {
+        req.flash("error", "This account is already closed.");
+        return res.redirect("/login");
+    }
+
+    req.logout((logoutError) => {
+        if (logoutError) return next(logoutError);
+        req.session.destroy((sessionError) => {
+            if (sessionError) return next(sessionError);
+            res.clearCookie("connect.sid", {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production"
+            });
+            res.render("users/accountClosed.ejs", { hideNavbar: true });
+        });
+    });
 };
 
 module.exports.logout = (req, res, next) => {

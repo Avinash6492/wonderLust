@@ -129,6 +129,15 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 app.use((req, res, next) => {
+    if (!req.user?.accountClosedAt) return next();
+    req.flash("error", "This account is closed. Your account data has been retained.");
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect("/login");
+    });
+});
+
+app.use((req, res, next) => {
     const needsToken = Boolean(req.user) ||
         ["/login", "/signup"].includes(req.path) ||
         req.path.startsWith("/verify-email");

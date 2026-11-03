@@ -2000,6 +2000,93 @@ p {
     background: #fff;
 }
 
+.profile-danger-zone {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 26px;
+    align-items: start;
+    margin-top: 20px;
+    padding: 24px;
+    border: 1px solid #f0c9cf;
+    border-radius: 18px;
+    background: #fffafb;
+}
+
+.profile-danger-zone h2 {
+    margin: 0 0 8px;
+    color: #38272a;
+    font-size: 1.2rem;
+    font-weight: 750;
+}
+
+.profile-danger-zone > div > p:last-child {
+    max-width: 62ch;
+    margin: 0;
+    color: #71666a;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+.close-account-form {
+    display: grid;
+    gap: 8px;
+}
+
+.close-account-form label {
+    margin-top: 4px;
+    color: #51474a;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.close-account-form input:not([type="hidden"]) {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ded4d6;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.close-account-button {
+    margin-top: 8px;
+    padding: 11px 15px;
+    border: 0;
+    border-radius: 9px;
+    background: #a82e43;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.close-account-button:hover {
+    background: #872437;
+}
+
+.account-closed-card {
+    width: min(100%, 560px);
+    padding: 36px;
+    border: 1px solid #ece8e8;
+    border-radius: 18px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 12px 36px rgba(44, 25, 29, 0.08);
+}
+
+.account-closed-card h1 {
+    margin: 12px 0;
+    color: #292425;
+}
+
+.account-closed-card p {
+    color: #71666a;
+    line-height: 1.65;
+}
+
+.account-closed-card .profile-browse-link {
+    display: inline-flex;
+    margin-top: 10px;
+}
+
 .profile-section-heading {
     display: flex;
     align-items: center;
@@ -2212,8 +2299,14 @@ p {
     }
 
     .profile-account-card,
-    .profile-listings-section {
+    .profile-listings-section,
+    .profile-danger-zone {
         padding: 18px;
+    }
+
+    .profile-danger-zone {
+        grid-template-columns: 1fr;
+        gap: 18px;
     }
 
     .profile-details-grid {

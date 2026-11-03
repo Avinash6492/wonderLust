@@ -42,14 +42,14 @@
     <div class="detail-main-column">
       <section class="host-summary">
         <div class="host-avatar">
-          <% if (listing.owner && listing.owner.profileImage && listing.owner.profileImage.url) { %>
+          <% if (listing.owner && !listing.owner.accountClosedAt && listing.owner.profileImage && listing.owner.profileImage.url) { %>
             <img src="<%= listing.owner.profileImage.url %>" alt="<%= listing.owner.username %> profile photo">
           <% } else { %>
             <i class="bi bi-person-fill"></i>
           <% } %>
         </div>
         <div>
-          <h2>Stay hosted by <%= listing.owner ? listing.owner.username : "a local host" %></h2>
+          <h2>Stay hosted by <%= listing.owner && !listing.owner.accountClosedAt ? listing.owner.username : "a local host" %></h2>
           <p>Welcome to this stay in <%= listing.location %></p>
         </div>
       </section>
@@ -120,12 +120,13 @@
         <% } else { %>
           <div class="row g-3">
             <% for (let review of listing.reviews) { %>
+              <% const visibleReviewAuthor = review.author && !review.author.accountClosedAt ? review.author : null; %>
               <div class="col-12 col-md-6">
                 <article class="guest-review-card h-100">
                   <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="review-avatar"><%= review.author && review.author.username ? review.author.username.charAt(0).toUpperCase() : "G" %></div>
+                    <div class="review-avatar"><%= visibleReviewAuthor?.username ? visibleReviewAuthor.username.charAt(0).toUpperCase() : "G" %></div>
                     <div class="flex-grow-1 min-width-0">
-                      <h3 class="reviewer-name mb-1"><%= review.author ? review.author.username : "Guest" %></h3>
+                      <h3 class="reviewer-name mb-1"><%= visibleReviewAuthor ? visibleReviewAuthor.username : "Former member" %></h3>
                       <small class="review-date"><%= review.createdAt ? new Date(review.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "" %></small>
                     </div>
                     <% if (currUser && review.author && currUser._id.equals(review.author._id)) { %>

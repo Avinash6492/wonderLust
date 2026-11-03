@@ -11,6 +11,8 @@ const userSchema = new Schema({
     },
     // Existing accounts remain usable; sign-up explicitly marks new accounts false.
     emailVerified: { type: Boolean, default: true },
+    // Soft closure preserves the account and related records in MongoDB.
+    accountClosedAt: { type: Date, default: null },
     emailVerificationTokenHash: { type: String, select: false },
     emailVerificationExpiresAt: { type: Date, select: false },
     wishlist: [{
