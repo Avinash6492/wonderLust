@@ -85,14 +85,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session(sessionOpts));
 
-app.use((req, res, next) => {
-    if (["/login", "/signup"].includes(req.path) || req.path.startsWith("/verify-email")) {
-        if (!req.session.csrfToken) req.session.csrfToken = crypto.randomBytes(32).toString("hex");
-        res.locals.csrfToken = req.session.csrfToken;
-    }
-    next();
-});
-
 const unsafeMethods = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 app.use((req, res, next) => {
     const origin = req.get("origin");
@@ -135,6 +127,17 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
+
+app.use((req, res, next) => {
+    const needsToken = Boolean(req.user) ||
+        ["/login", "/signup"].includes(req.path) ||
+        req.path.startsWith("/verify-email");
+    if (needsToken && !req.session.csrfToken) {
+        req.session.csrfToken = crypto.randomBytes(32).toString("hex");
+    }
+    res.locals.csrfToken = req.session.csrfToken;
+    next();
+});
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
